@@ -24,3 +24,13 @@ O EduGamify é uma plataforma que transforma atividades educacionais em desafios
 ## 🚀 Deploy
 
 O frontend está hospedado em: https://maykrhenderson.github.io/frontend-edugamify
+
+👥 Integrantes
+
+Igor Araujo Ferreira Gilson
+Kelvin Arruda Sales
+Crisnando Lima De Jesus
+Joao Paulo Victorino
+Pierre Wendell Pires Dos Santos
+Mayk Rhenderson Gustavo Silva
+Joao Vitor Rodrigues Costa
