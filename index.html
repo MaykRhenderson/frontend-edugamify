@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduGamify - Sistema de Gamificação</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .header {
+      background: white;
+      border-radius: 15px;
+      padding: 20px 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .logo h1 {
+      color: #667eea;
+      font-size: 28px;
+    }
+
+    .logo p {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .user-type {
+      display: flex;
+      gap: 15px;
+    }
+
+    .btn-role {
+      padding: 10px 25px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+
+    .btn-role.professor {
+      background: #4CAF50;
+      color: white;
+    }
+
+    .btn-role.aluno {
+      background: #2196F3;
+      color: white;
+    }
+
+    .btn-role.active {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .dashboard {
+      display: none;
+    }
+
+    .dashboard.active {
+      display: block;
+    }
+
+    .card {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 25px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .card h2 {
+      color: #333;
+      margin-bottom: 20px;
+      border-left: 4px solid #667eea;
+      padding-left: 15px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .student-list {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background: #f8f9fa;
+      color: #333;
+      font-weight: bold;
+    }
+
+    tr:hover {
+      background: #f5f5f5;
+    }
+
+    .btn-primary {
+      background: #667eea;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+
+    .btn-primary:hover {
+      background: #5a67d8;
+      transform: translateY(-2px);
+    }
+
+    .btn-success {
+      background: #4CAF50;
+      color: white;
+      padding: 5px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 2px;
+    }
+
+    .btn-danger {
+      background: #f44336;
+      color: white;
+      padding: 5px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .ranking-list {
+      list-style: none;
+    }
+
+    .ranking-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .ranking-item .pontos {
+      font-weight: bold;
+      color: #ff9800;
+    }
+
+    .top-1 {
+      background: linear-gradient(90deg, #ffd70020, transparent);
+      font-weight: bold;
+    }
+
+    .recompensa-card {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: white;
+      padding: 15px 25px;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+      border-left: 4px solid #4CAF50;
+      z-index: 1000;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .saldo {
+      font-size: 48px;
+      font-weight: bold;
+      color: #667eea;
+      text-align: center;
+    }
+
+    .stats {
+      display: inline-block;
+      padding: 5px 10px;
+      background: #e3f2fd;
+      border-radius: 8px;
+      margin: 5px;
+    }
+
+    input,
+    select {
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      margin: 5px;
+    }
+
+    .flex {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .ponto-form {
+      display: inline-flex;
+      gap: 5px;
+      align-items: center;
+    }
+
+    .ponto-form input {
+      width: 60px;
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .recompensa-card {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">
+        <h1>🏆 EduGamify</h1>
+        <p>Gamificação Educacional - Com Supabase</p>
+      </div>
+      <div class="user-type">
+        <button class="btn-role professor active" onclick="switchRole('professor')">👨‍🏫 Professor</button>
+        <button class="btn-role aluno" onclick="switchRole('aluno')">👨‍🎓 Aluno</button>
+      </div>
+    </div>
+
+    <!-- Dashboard Professor -->
+    <div id="professorDashboard" class="dashboard active">
+      <div class="card">
+        <h2>⚙️ Configurar Pontuação</h2>
+        <div class="flex">
+          <div class="stats">Presença: <input type="number" id="pontosPresenca" value="5" style="width:60px"> pts</div>
+          <div class="stats">Tarefa: <input type="number" id="pontosTarefa" value="10" style="width:60px"> pts</div>
+          <div class="stats">Participação: <input type="number" id="pontosParticipacao" value="10" style="width:60px">
+            pts</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>👥 Alunos</h2>
+        <div class="student-list">
+          <table id="tabelaAlunos">
+            <thead>
+              <tr>
+                <th>Aluno</th>
+                <th>Pontos</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="listaAlunosBody"></tbody>
+          </table>
+        </div>
+        <div class="flex">
+          <input type="text" id="novoAlunoNome" placeholder="Nome do novo aluno">
+          <button class="btn-primary" onclick="adicionarAluno()">➕ Adicionar Aluno</button>
+          <button class="btn-primary" onclick="resetarPontuacaoGeral()">🔄 Resetar Pontos</button>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h2>📊 Desempenho</h2>
+          <div id="estatisticasTurma"></div>
+        </div>
+        <div class="card">
+          <h2>🎁 Solicitações Pendentes</h2>
+          <div id="resgatesPendentes"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🏅 Recompensas</h2>
+        <div id="catalogoRecompensasProfessor"></div>
+        <div class="flex">
+          <input type="text" id="novaRecompensaNome" placeholder="Nome">
+          <input type="number" id="novaRecompensaCusto" placeholder="Custo">
+          <button class="btn-primary" onclick="adicionarRecompensa()">➕ Adicionar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard Aluno -->
+    <div id="alunoDashboard" class="dashboard">
+      <div class="grid-2">
+        <div class="card">
+          <h2>🌟 Meus Pontos</h2>
+          <div class="saldo" id="alunoSaldo">0</div>
+        </div>
+        <div class="card">
+          <h2>🏆 Ranking</h2>
+          <div id="rankingAluno"></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>📋 Histórico</h2>
+        <div id="alunoHistorico"></div>
+      </div>
+      <div class="card">
+        <h2>🎁 Resgatar</h2>
+        <div id="recompensasAluno"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 🔴 COLOQUE A URL DO SEU BACKEND AQUI DEPOIS DE HOSPEDAR!
+    const API_URL = 'http://localhost:3000'; // MUDE PARA URL DO RENDER DEPOIS
+
+    let alunoAtualId = 1;
+    let config = { pontosPresenca: 5, pontosTarefa: 10, pontosParticipacao: 10 };
+
+    async function apiGet(url) {
+      const res = await fetch(`${API_URL}${url}`);
+      return res.json();
+    }
+
+    async function apiPost(url, data) {
+      const res = await fetch(`${API_URL}${url}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      return res.json();
+    }
+
+    async function apiPut(url, data) {
+      const res = await fetch(`${API_URL}${url}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      return res.json();
+    }
+
+    async function apiDelete(url) {
+      const res = await fetch(`${API_URL}${url}`, { method: 'DELETE' });
+      return res.json();
+    }
+
+    function mostrarNotificacao(msg, tipo) {
+      const notif = document.createElement('div');
+      notif.className = 'notification';
+      notif.innerHTML = msg;
+      notif.style.borderLeftColor = tipo === 'success' ? '#4CAF50' : '#f44336';
+      document.body.appendChild(notif);
+      setTimeout(() => notif.remove(), 3000);
+    }
+
+    // ========== PROFESSOR ==========
+    async function carregarAlunos() {
+      const alunos = await apiGet('/api/alunos');
+      const tbody = document.getElementById('listaAlunosBody');
+      tbody.innerHTML = '';
+
+      alunos.forEach(aluno => {
+        const row = tbody.insertRow();
+        row.insertCell(0).innerHTML = `<strong>${aluno.nome}</strong>`;
+        row.insertCell(1).innerHTML = `<span style="font-size:20px;color:#ff9800">${aluno.pontos}</span>`;
+        row.insertCell(2).innerHTML = `
+                <button class="btn-success" onclick="adicionarPontos(${aluno.id}, ${config.pontosPresenca}, 'Presença')">✓ Presença</button>
+                <button class="btn-success" onclick="adicionarPontos(${aluno.id}, ${config.pontosTarefa}, 'Tarefa')">📚 Tarefa</button>
+                <button class="btn-success" onclick="adicionarPontos(${aluno.id}, ${config.pontosParticipacao}, 'Participação')">💬 Participação</button>
+                <div class="ponto-form">
+                    <input type="number" id="pts_${aluno.id}" value="5" style="width:60px">
+                    <button class="btn-primary" onclick="pontosPersonalizados(${aluno.id})">+</button>
+                </div>
+            `;
+      });
+
+      const pontos = alunos.map(a => a.pontos);
+      const media = pontos.reduce((a, b) => a + b, 0) / alunos.length || 0;
+      const baixo = alunos.filter(a => a.pontos < 30).length;
+
+      document.getElementById('estatisticasTurma').innerHTML = `
+            <p>📊 Média: <strong>${media.toFixed(1)}</strong></p>
+            <p>⚠️ Baixo engajamento: <strong>${baixo}</strong></p>
+        `;
+    }
+
+    async function adicionarPontos(id, pontos, motivo) {
+      await apiPut(`/api/alunos/${id}/pontos`, { pontos, motivo });
+      await carregarAlunos();
+      await carregarSolicitacoes();
+      mostrarNotificacao(`+${pontos} pontos!`, 'success');
+    }
+
+    async function pontosPersonalizados(id) {
+      const input = document.getElementById(`pts_${id}`);
+      const pontos = parseInt(input.value);
+      if (pontos) await adicionarPontos(id, pontos, 'Personalizado');
+    }
+
+    async function adicionarAluno() {
+      const nome = document.getElementById('novoAlunoNome').value.trim();
+      if (nome) {
+        await apiPost('/api/alunos', { nome });
+        document.getElementById('novoAlunoNome').value = '';
+        await carregarAlunos();
+        mostrarNotificacao(`Aluno ${nome} adicionado!`, 'success');
+      }
+    }
+
+    async function resetarPontuacaoGeral() {
+      if (confirm('Resetar todos os pontos?')) {
+        await apiPost('/api/alunos/reset-all', {});
+        await carregarAlunos();
+        mostrarNotificacao('Pontuação resetada!', 'success');
+      }
+    }
+
+    async function carregarRecompensasProfessor() {
+      const recompensas = await apiGet('/api/recompensas');
+      const container = document.getElementById('catalogoRecompensasProfessor');
+      container.innerHTML = '';
+      recompensas.forEach(rec => {
+        container.innerHTML += `
+                <div class="recompensa-card">
+                    <div><h4>${rec.nome}</h4><p>Custo: ${rec.custo} pts</p></div>
+                    <button class="btn-danger" onclick="removerRecompensa(${rec.id})">Remover</button>
+                </div>
+            `;
+      });
+    }
+
+    async function adicionarRecompensa() {
+      const nome = document.getElementById('novaRecompensaNome').value.trim();
+      const custo = parseInt(document.getElementById('novaRecompensaCusto').value);
+      if (nome && custo) {
+        await apiPost('/api/recompensas', { nome, custo });
+        document.getElementById('novaRecompensaNome').value = '';
+        document.getElementById('novaRecompensaCusto').value = '';
+        await carregarRecompensasProfessor();
+        mostrarNotificacao('Recompensa adicionada!', 'success');
+      }
+    }
+
+    async function removerRecompensa(id) {
+      await apiDelete(`/api/recompensas/${id}`);
+      await carregarRecompensasProfessor();
+    }
+
+    async function carregarSolicitacoes() {
+      const solicitacoes = await apiGet('/api/solicitacoes');
+      const container = document.getElementById('resgatesPendentes');
+      if (solicitacoes.length === 0) {
+        container.innerHTML = '<p>Nenhum resgate pendente</p>';
+        return;
+      }
+      container.innerHTML = '';
+      for (const sol of solicitacoes) {
+        const alunos = await apiGet('/api/alunos');
+        const aluno = alunos.find(a => a.id === sol.aluno_id);
+        container.innerHTML += `
+                <div class="recompensa-card">
+                    <div>
+                        <strong>${aluno ? aluno.nome : 'Aluno'}</strong> solicitou: ${sol.recompensa_nome}<br>
+                        Custo: ${sol.custo} pts
+                    </div>
+                    <div>
+                        <button class="btn-success" onclick="aprovarResgate(${sol.id}, ${sol.aluno_id}, ${sol.custo}, '${sol.recompensa_nome}')">Aprovar</button>
+                        <button class="btn-danger" onclick="rejeitarResgate(${sol.id})">Rejeitar</button>
+                    </div>
+                </div>
+            `;
+      }
+    }
+
+    async function aprovarResgate(id, alunoId, custo, nome) {
+      await apiPut(`/api/solicitacoes/${id}/aprovar`, { aluno_id: alunoId, custo, recompensa_nome: nome });
+      await carregarAlunos();
+      await carregarSolicitacoes();
+      mostrarNotificacao('Resgate aprovado!', 'success');
+    }
+
+    async function rejeitarResgate(id) {
+      await apiDelete(`/api/solicitacoes/${id}/rejeitar`);
+      await carregarSolicitacoes();
+    }
+
+    // ========== ALUNO ==========
+    async function carregarDadosAluno() {
+      const alunos = await apiGet('/api/alunos');
+      const aluno = alunos.find(a => a.id === alunoAtualId);
+      if (!aluno) return;
+
+      document.getElementById('alunoSaldo').innerText = aluno.pontos;
+
+      const historico = await apiGet(`/api/historico/${alunoAtualId}`);
+      const histDiv = document.getElementById('alunoHistorico');
+      if (historico.length > 0) {
+        histDiv.innerHTML = '<table style="width:100%"></td><th>Data</th><th>Atividade</th><th>Pontos</th></tr>';
+        historico.slice(0, 10).forEach(h => {
+          histDiv.innerHTML += `<tr><td style="font-size:12px">${h.data}</td><td>${h.tipo}</td><td style="color:${h.pontos > 0 ? 'green' : 'red'}">${h.pontos > 0 ? '+' : ''}${h.pontos}</td></tr>`;
+        });
+        histDiv.innerHTML += '</table>';
+      } else {
+        histDiv.innerHTML = '<p>Nenhuma atividade</p>';
+      }
+
+      const ranking = [...alunos].sort((a, b) => b.pontos - a.pontos);
+      const posicao = ranking.findIndex(a => a.id === alunoAtualId) + 1;
+      let rankingHtml = `<p><strong>Sua posição: ${posicao}º</strong></p><ul class="ranking-list">`;
+      ranking.slice(0, 5).forEach((a, i) => {
+        rankingHtml += `<li class="ranking-item ${i === 0 ? 'top-1' : ''}"><span>${i + 1}. ${a.nome}</span><span class="pontos">${a.pontos} pts</span></li>`;
+      });
+      rankingHtml += '</ul>';
+      document.getElementById('rankingAluno').innerHTML = rankingHtml;
+
+      const recompensas = await apiGet('/api/recompensas');
+      const recompDiv = document.getElementById('recompensasAluno');
+      recompDiv.innerHTML = '';
+      recompensas.forEach(rec => {
+        recompDiv.innerHTML += `
+                <div class="recompensa-card">
+                    <div><h4>${rec.nome}</h4><p>${rec.custo} pts</p></div>
+                    <button class="btn-primary" onclick="solicitarResgate(${rec.id}, '${rec.nome}', ${rec.custo})" ${aluno.pontos >= rec.custo ? '' : 'disabled'}>Resgatar</button>
+                </div>
+            `;
+      });
+    }
+
+    async function solicitarResgate(id, nome, custo) {
+      await apiPost('/api/solicitacoes', {
+        aluno_id: alunoAtualId,
+        recompensa_id: id,
+        recompensa_nome: nome,
+        custo: custo
+      });
+      mostrarNotificacao(`Solicitação de "${nome}" enviada!`, 'success');
+    }
+
+    // ========== TROCAR TELA ==========
+    async function switchRole(role) {
+      document.querySelectorAll('.btn-role').forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`.btn-role.${role}`).classList.add('active');
+
+      const profDiv = document.getElementById('professorDashboard');
+      const alunoDiv = document.getElementById('alunoDashboard');
+
+      if (role === 'professor') {
+        profDiv.classList.add('active');
+        alunoDiv.classList.remove('active');
+        await carregarAlunos();
+        await carregarRecompensasProfessor();
+        await carregarSolicitacoes();
+      } else {
+        profDiv.classList.remove('active');
+        alunoDiv.classList.add('active');
+        await carregarDadosAluno();
+      }
+    }
+
+    // Inicializar
+    carregarAlunos();
+    carregarRecompensasProfessor();
+    carregarSolicitacoes();
+
+    window.switchRole = switchRole;
+    window.adicionarPontos = adicionarPontos;
+    window.pontosPersonalizados = pontosPersonalizados;
+    window.adicionarAluno = adicionarAluno;
+    window.resetarPontuacaoGeral = resetarPontuacaoGeral;
+    window.adicionarRecompensa = adicionarRecompensa;
+    window.removerRecompensa = removerRecompensa;
+    window.aprovarResgate = aprovarResgate;
+    window.rejeitarResgate = rejeitarResgate;
+    window.solicitarResgate = solicitarResgate;
+  </script>
+</body>
+
+</html>
