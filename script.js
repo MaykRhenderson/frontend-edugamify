@@ -173,23 +173,43 @@
     }
 
     // ========== ALUNO ==========
-    async function carregarDadosAluno() {
-      const alunos = await apiGet('/api/alunos');
-      const aluno = alunos.find(a => a.id === alunoAtualId);
-      if (!aluno) return;
+     async function carregarDadosAluno() {
+  const alunos = await apiGet('/api/alunos');
+  const aluno = alunos.find(a => a.id === alunoAtualId);
+  if (!aluno) return;
 
-      document.getElementById('alunoSaldo').innerText = aluno.pontos;
+  document.getElementById('alunoSaldo').innerText = aluno.pontos;
 
-      const historico = await apiGet(`/api/historico/${alunoAtualId}`);
-      const histDiv = document.getElementById('alunoHistorico');
-      if (historico.length > 0) {
-        histDiv.innerHTML = '<table style="width:100%"></td><th>Data</th><th>Atividade</th><th>Pontos</th></tr>';
-        historico.slice(0, 10).forEach(h => {
-          histDiv.innerHTML += `<tr><td style="font-size:12px">${h.data}</td><td>${h.tipo}</td><td style="color:${h.pontos > 0 ? 'green' : 'red'}">${h.pontos > 0 ? '+' : ''}${h.pontos}</td></tr>`;
-        });
-        histDiv.innerHTML += '</table>';
-      } else {
-        histDiv.innerHTML = '<p>Nenhuma atividade</p>';
+  const historico = await apiGet(`/api/historico/${alunoAtualId}`);
+  const histDiv = document.getElementById('alunoHistorico');
+
+  if (historico.length > 0) {
+    histDiv.innerHTML = `
+      <table style="width:100%">
+        <tr>
+          <th>Data</th>
+          <th>Atividade</th>
+          <th>Pontos</th>
+        </tr>
+      </table>
+    `;
+
+    const tabela = histDiv.querySelector("table");
+
+    historico.slice(0, 10).forEach(h => {
+      tabela.innerHTML += `
+        <tr>
+          <td style="font-size:12px">${h.data}</td>
+          <td>${h.tipo}</td>
+          <td style="color:${h.pontos > 0 ? 'green' : 'red'}">
+            ${h.pontos > 0 ? '+' : ''}${h.pontos}
+          </td>
+        </tr>
+      `;
+    });
+
+  } else {
+    histDiv.innerHTML = '<p>Nenhuma atividade</p>';
       }
 
       const ranking = [...alunos].sort((a, b) => b.pontos - a.pontos);
