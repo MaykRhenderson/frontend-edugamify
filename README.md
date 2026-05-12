@@ -32,7 +32,7 @@ O frontend está hospedado em: https://maykrhenderson.github.io/frontend-edugami
 - Gilson Kelvin Arruda Sales
 - Crisnando Lima De Jesus
 - Joao Paulo Victorino Pierre
-- Wendell Pires Dos Santos
+- Wendell Pires Dos Santos 
 - Mayk Rhenderson
 - Gustavo Silva
 - Joao Vitor Rodrigues Costa
