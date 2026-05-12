@@ -210,7 +210,7 @@
 
   } else {
     histDiv.innerHTML = '<p>Nenhuma atividade</p>';
-      }
+  }
 
       const ranking = [...alunos].sort((a, b) => b.pontos - a.pontos);
       const posicao = ranking.findIndex(a => a.id === alunoAtualId) + 1;
