@@ -208,7 +208,7 @@
       `;
     });
 
-  } else {
+    } else {
     histDiv.innerHTML = '<p>Nenhuma atividade</p>';
   }
 
