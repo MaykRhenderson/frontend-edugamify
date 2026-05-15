@@ -2,7 +2,7 @@
 
 Sistema de Gamificação Educacional para aumentar o engajamento de alunos através de pontos e recompensas.
 
-## 📋 Sobre o 
+## 📋 Sobre o Projeto
 
 O EduGamify é uma plataforma que transforma atividades educacionais em desafios recompensadores, permitindo que professores gerenciem pontos e recompensas para motivar os alunos.
 
